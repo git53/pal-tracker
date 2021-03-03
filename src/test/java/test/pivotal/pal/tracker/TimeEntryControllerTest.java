@@ -32,16 +32,19 @@ public class TimeEntryControllerTest {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry timeEntryToCreate = new TimeEntry(0, projectId, userId, LocalDate.parse("2017-01-08"), 8);
-
+//      arrange
         long timeEntryId = 1L;
         TimeEntry expectedResult = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
         doReturn(expectedResult)
             .when(timeEntryRepository)
             .create(any(TimeEntry.class));
-
+//      execute
         ResponseEntity<TimeEntry> response = controller.create(timeEntryToCreate);
 
+//        Verify if the dependency is actually being called
         verify(timeEntryRepository).create(timeEntryToCreate);
+
+//       Assert results
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isEqualTo(expectedResult);
     }
